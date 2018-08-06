@@ -5,7 +5,7 @@
     </div>
     <div class="bar"></div>
     <div class="info">We are in the process of finalizing the service. Please let us know if you are interested so that we can reach out to you.<br/><br/>
-    * The first 1000 people who sign up will receive custom printed label stickers with you name in your own font</div>
+    * The first 1000 people who sign up will receive custom printed label stickers with you name in your own font.</div>
     <form class="form-wrapper" @submit="checkForm">
       <input type="email" placeholder="Your email">
       <input type="text" placeholder="Your name">
@@ -44,8 +44,8 @@ input{
   font-size: 14px;
   border: 1px solid #dcdfe6;
   color: #606266;
-  height: 40px;
-  line-height: 40px;
+  height: 4vh;
+  line-height: 4vh;
   outline: none;
   padding: 0 15px;
   transition: border-color .2s cubic-bezier(.645,.045,.355,1);

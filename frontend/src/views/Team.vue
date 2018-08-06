@@ -52,4 +52,10 @@ export default {
   border-radius: 100%;
   object-fit: cover;
 }
+@media screen and (max-width: 600px) {
+  .memberImage{
+    width: 60px;
+    height: 60px;
+  }
+}
 </style>

@@ -64,7 +64,7 @@ export default {
             this.$router.push({ name: this.links[this.curIndex] })
           }
         }
-        setTimeout(() => { this.isAnim = false }, 1000)
+        setTimeout(() => { this.isAnim = false }, 500)
       }
     },
     handleTouchStart (evt) {
@@ -72,7 +72,7 @@ export default {
       this.yDown = evt.touches[0].clientY
     },
     handleTouchMove (evt) {
-      if (!this.xDown || !this.yDown) {
+      if (!this.xDown || !this.yDown || this.isAnim) {
         return
       }
       let xUp = evt.touches[0].clientX
@@ -80,14 +80,16 @@ export default {
       let xDiff = this.xDown - xUp
       let yDiff = this.yDown - yUp
 
-      if (Math.abs(xDiff) < Math.abs(yDiff)) {
-        if (yDiff > 10) { /* up swipe */
+      if (Math.abs(xDiff) < Math.abs(yDiff) && Math.abs(yDiff) > 8) {
+        this.isAnim = true
+        if (yDiff > 0) { /* up swipe */
           this.curIndex += 1
-          this.$router.push({ name: this.links[this.curIndex] })
-        } else if (yDiff < -10) { /* down swipe */
+        } else if (yDiff < 0) { /* down swipe */
+          this.isAnim = true
           this.curIndex -= 1
-          this.$router.push({ name: this.links[this.curIndex] })
         }
+        this.$router.push({ name: this.links[this.curIndex] })
+        setTimeout(() => { this.isAnim = false }, 500)
       }
       /* reset values */
       this.xDown = null
@@ -179,7 +181,7 @@ body {
   position: fixed;
   z-index: 10;
   top: 45%;
-  right: 50px;
+  right: 5%;
   display: flex;
   flex-flow: column;
 }
@@ -217,6 +219,7 @@ body {
 .fullscreen{
   width: 100%;
   height: 100%;
+  padding-top: 70px;
   position: absolute;
   display: flex;
   flex-flow: column;
@@ -233,7 +236,7 @@ body {
 }
 .bar{
   height: 2px;
-  margin: 20px 0 30px 5%;
+  margin: 2vh 0 3vh 5%;
   width: 30%;
   background-color: #000;
 }
@@ -244,5 +247,10 @@ body {
   padding-left: 5%;
   width: 80%;
   text-align: left;
+}
+@media screen and (max-width: 600px) {
+  .info{
+    font-size: 16px;
+  }
 }
 </style>
