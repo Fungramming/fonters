@@ -4,15 +4,15 @@
       <router-link :to="{ name: 'home' }"  class="logo">Fonters</router-link>
       <router-link :to="{ name: 'signup' }" class="button">Stay Tuned</router-link>
     </header>
-    <transition name="slide-fade">
-      <router-view/>
+    <transition name='fade' mode="in-out">
+      <router-view class="router-view"/>
     </transition>
     <div class="page-nav">
-      <router-link :to="{ name: 'home' }" :class="{selected: isActive('home')}" class="page-button">01</router-link>
-      <router-link :to="{ name: 'tech' }" :class="{selected: isActive('tech')}" class="page-button">02</router-link>
-      <router-link :to="{ name: 'service' }" :class="{selected: isActive('service')}" class="page-button">03</router-link>
-      <router-link :to="{ name: 'signup' }" :class="{selected: isActive('signup')}" class="page-button">04</router-link>
-      <router-link :to="{ name: 'team' }" :class="{selected: isActive('team')}" class="page-button">05</router-link>
+      <a @click="navClicked(0)" :class="{selected: isActive('home')}" class="page-button">01</a>
+      <a @click="navClicked(1)" :class="{selected: isActive('tech')}" class="page-button">02</a>
+      <a @click="navClicked(2)" :class="{selected: isActive('service')}" class="page-button">03</a>
+      <a @click="navClicked(3)" :class="{selected: isActive('signup')}" class="page-button">04</a>
+      <a @click="navClicked(4)" :class="{selected: isActive('team')}" class="page-button">05</a>
     </div>
   </div>
 </template>
@@ -22,18 +22,83 @@ export default {
   name: 'App',
   data () {
     return {
-      activeMenu: 'home'
+      activeMenu: 'home',
+      isAnim: false,
+      curIndex: 0,
+      links: ['home', 'tech', 'service', 'signup', 'team'],
+      xDown: null,
+      yDown: null
     }
   },
   watch: {
     $route (to) {
       this.activeMenu = to.name
+      this.curIndex = this.links.indexOf(this.activeMenu)
     }
+  },
+  mounted () {
+    document.getElementById('app').addEventListener('mousewheel', this.vueWheel)
+    document.getElementById('app').addEventListener('DOMMouseScroll', this.vueWheel)
+    document.addEventListener('touchstart', this.handleTouchStart, false)
+    document.addEventListener('touchmove', this.handleTouchMove, false)
   },
   methods: {
     isActive (menuItem) {
       return this.activeMenu === menuItem
+    },
+    navClicked (index) {
+      this.curIndex = index
+      this.$router.push({ name: this.links[this.curIndex] })
+    },
+    vueWheel (e) {
+      if (!this.isAnim && Math.abs(e.deltaY) > 30) {
+        this.isAnim = true
+        if (e.deltaY < 0) {
+          if (this.curIndex > 0) {
+            this.curIndex -= 1
+            this.$router.push({ name: this.links[this.curIndex] })
+          }
+        } else {
+          if (this.curIndex < this.links.length - 1) {
+            this.curIndex += 1
+            this.$router.push({ name: this.links[this.curIndex] })
+          }
+        }
+        setTimeout(() => { this.isAnim = false }, 1000)
+      }
+    },
+    handleTouchStart (evt) {
+      this.xDown = evt.touches[0].clientX
+      this.yDown = evt.touches[0].clientY
+    },
+    handleTouchMove (evt) {
+      if (!this.xDown || !this.yDown) {
+        return
+      }
+      let xUp = evt.touches[0].clientX
+      let yUp = evt.touches[0].clientY
+      let xDiff = this.xDown - xUp
+      let yDiff = this.yDown - yUp
+
+      if (Math.abs(xDiff) < Math.abs(yDiff)) {
+        if (yDiff > 10) { /* up swipe */
+          this.curIndex += 1
+          this.$router.push({ name: this.links[this.curIndex] })
+        } else if (yDiff < -10) { /* down swipe */
+          this.curIndex -= 1
+          this.$router.push({ name: this.links[this.curIndex] })
+        }
+      }
+      /* reset values */
+      this.xDown = null
+      this.yDown = null
     }
+  },
+  beforeDestroy () {
+    document.getElementById('app').removeEventListener('mousewheel', this.vueWheel)
+    document.getElementById('app').removeEventListener('DOMMouseScroll', this.vueWheel)
+    document.removeEventListener('touchstart', this.handleTouchStart, false)
+    document.removeEventListener('touchmove', this.handleTouchMove, false)
   }
 }
 </script>
@@ -131,21 +196,28 @@ body {
   color: #000;
 }
 /* transition */
-/* .slide-fade-enter-active {
-  transition: all .2s ease;
+.fade-enter{
+  opacity: 0.5;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(100%);
 }
-.slide-fade-leave-active {
-  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.fade-enter-active {
+  transition: all .5s ease;
+  z-index: 3;
 }
-.slide-fade-enter, .slide-fade-leave-to
-{
-  transform: translateY(10px);
-  opacity: 0;
-} */
+.fade-leave-active {
+  transition: all .3s ease;
+}
+.fade-leave-to {
+  opacity: 0.5;
+  transform: translateY(-100%);
+}
 /* common component */
 .fullscreen{
   width: 100%;
   height: 100%;
+  position: absolute;
   display: flex;
   flex-flow: column;
   align-items: flex-start;
@@ -168,7 +240,7 @@ body {
 .info{
   color: #69696b;
   font-weight: 200;
-  font-size: 16px;
+  font-size: 18px;
   padding-left: 5%;
   width: 80%;
   text-align: left;

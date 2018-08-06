@@ -16,6 +16,6 @@ export default {
 
 <style scoped>
 .fullscreen{
-  background-color: #9796dcc0;
+  background-color: #9796dc;
 }
 </style>
