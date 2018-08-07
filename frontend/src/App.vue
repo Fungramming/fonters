@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'home' }"  class="logo">Fonters</router-link>
       <router-link :to="{ name: 'signup' }" class="button">Stay Tuned</router-link>
     </header>
-    <transition name='fade' mode="in-out">
+    <transition :name='fade' mode="in-out">
       <router-view class="router-view"/>
     </transition>
     <div class="page-nav">
@@ -27,7 +27,8 @@ export default {
       curIndex: 0,
       links: ['home', 'tech', 'service', 'signup', 'team'],
       xDown: null,
-      yDown: null
+      yDown: null,
+      fade: 'fade'
     }
   },
   watch: {
@@ -47,6 +48,11 @@ export default {
       return this.activeMenu === menuItem
     },
     navClicked (index) {
+      if (index > this.curIndex) {
+        this.fade = 'fade'
+      } else {
+        this.fade = 'fade-down'
+      }
       this.curIndex = index
       this.$router.push({ name: this.links[this.curIndex] })
     },
@@ -56,11 +62,13 @@ export default {
         if (e.deltaY < 0) {
           if (this.curIndex > 0) {
             this.curIndex -= 1
+            this.fade = 'fade-down'
             this.$router.push({ name: this.links[this.curIndex] })
           }
         } else {
           if (this.curIndex < this.links.length - 1) {
             this.curIndex += 1
+            this.fade = 'fade'
             this.$router.push({ name: this.links[this.curIndex] })
           }
         }
@@ -84,9 +92,11 @@ export default {
         this.isAnim = true
         if (yDiff > 0) { /* up swipe */
           this.curIndex += 1
+          this.fade = 'fade'
         } else if (yDiff < 0) { /* down swipe */
           this.isAnim = true
           this.curIndex -= 1
+          this.fade = 'fade-down'
         }
         this.$router.push({ name: this.links[this.curIndex] })
         setTimeout(() => { this.isAnim = false }, 500)
@@ -214,6 +224,23 @@ body {
 .fade-leave-to {
   opacity: 0.5;
   transform: translateY(-100%);
+}
+.fade-down-enter{
+  opacity: 0.5;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-100%);
+}
+.fade-down-enter-active {
+  transition: all .5s ease;
+  z-index: 3;
+}
+.fade-down-leave-active {
+  transition: all .3s ease;
+}
+.fade-down-leave-to {
+  opacity: 0.5;
+  transform: translateY(100%);
 }
 /* common component */
 .fullscreen{
