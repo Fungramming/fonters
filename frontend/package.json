@@ -8,9 +8,11 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "deploy": "aws s3 sync ../dist s3://fonters --delete"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

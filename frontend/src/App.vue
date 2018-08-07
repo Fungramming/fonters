@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <header class='is-fixed nav'>
-      <router-link :to="{ name: 'home' }"  class="logo">Fonters</router-link>
-      <router-link :to="{ name: 'signup' }" class="button">Stay Tuned</router-link>
+      <a @click="navClicked(0)"  class="logo">Fonters</a>
+      <a @click="navClicked(3)" class="button">Stay Tuned</a>
     </header>
     <transition :name='fade' mode="in-out">
       <router-view class="router-view"/>

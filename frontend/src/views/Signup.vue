@@ -7,18 +7,45 @@
     <div class="info">We are in the process of finalizing the service. Please let us know if you are interested so that we can reach out to you.<br/><br/>
     * The first 1000 people who sign up will receive custom printed label stickers with you name in your own font.</div>
     <form class="form-wrapper" @submit="checkForm">
-      <input type="email" placeholder="Your email">
-      <input type="text" placeholder="Your name">
+      <input type="email" v-model="email" placeholder="Your email">
+      <input type="text" v-model="name" placeholder="Your name">
       <input type="submit" value="Stay tuned">
     </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+  data () {
+    return {
+      email: null,
+      name: null
+    }
+  },
   methods: {
     checkForm (e) {
       e.preventDefault()
+      if (!this.email || !this.name) {
+        alert('Please check your input again!')
+        return
+      }
+
+      axios.put('http://localhost:5000/', {
+        email: this.email,
+        name: this.name
+      })
+        .then((resp) => {
+          if (resp.status === 201) {
+            alert('Sign up completed.\nThank you for participating!')
+            this.$router.push({ name: 'home' })
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('Sorry, sign up failed...\nDevelopers are also very embarrassed.\nWe will fix it as soon as possible.')
+        })
     }
   }
 }
