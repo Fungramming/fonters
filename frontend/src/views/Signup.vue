@@ -32,7 +32,7 @@ export default {
         return
       }
 
-      axios.put('http://localhost:5000/', {
+      axios.put('https://api.fonters.info/', {
         email: this.email,
         name: this.name
       })
