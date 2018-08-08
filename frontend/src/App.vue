@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <header class='is-fixed nav'>
-      <router-link :to="{ name: 'home' }"  class="logo">Fonters</router-link>
-      <router-link :to="{ name: 'signup' }" class="button">Stay Tuned</router-link>
+      <a @click="navClicked(0)"  class="logo">Fonters</a>
+      <a @click="navClicked(3)" class="button">Stay Tuned</a>
     </header>
-    <transition name='fade' mode="in-out">
+    <transition :name='fade' mode="in-out">
       <router-view class="router-view"/>
     </transition>
     <div class="page-nav">
@@ -27,7 +27,8 @@ export default {
       curIndex: 0,
       links: ['home', 'tech', 'service', 'signup', 'team'],
       xDown: null,
-      yDown: null
+      yDown: null,
+      fade: 'fade'
     }
   },
   watch: {
@@ -47,6 +48,11 @@ export default {
       return this.activeMenu === menuItem
     },
     navClicked (index) {
+      if (index > this.curIndex) {
+        this.fade = 'fade'
+      } else {
+        this.fade = 'fade-down'
+      }
       this.curIndex = index
       this.$router.push({ name: this.links[this.curIndex] })
     },
@@ -56,15 +62,17 @@ export default {
         if (e.deltaY < 0) {
           if (this.curIndex > 0) {
             this.curIndex -= 1
+            this.fade = 'fade-down'
             this.$router.push({ name: this.links[this.curIndex] })
           }
         } else {
           if (this.curIndex < this.links.length - 1) {
             this.curIndex += 1
+            this.fade = 'fade'
             this.$router.push({ name: this.links[this.curIndex] })
           }
         }
-        setTimeout(() => { this.isAnim = false }, 1000)
+        setTimeout(() => { this.isAnim = false }, 500)
       }
     },
     handleTouchStart (evt) {
@@ -72,7 +80,7 @@ export default {
       this.yDown = evt.touches[0].clientY
     },
     handleTouchMove (evt) {
-      if (!this.xDown || !this.yDown) {
+      if (!this.xDown || !this.yDown || this.isAnim) {
         return
       }
       let xUp = evt.touches[0].clientX
@@ -80,14 +88,18 @@ export default {
       let xDiff = this.xDown - xUp
       let yDiff = this.yDown - yUp
 
-      if (Math.abs(xDiff) < Math.abs(yDiff)) {
-        if (yDiff > 10) { /* up swipe */
+      if (Math.abs(xDiff) < Math.abs(yDiff) && Math.abs(yDiff) > 8) {
+        this.isAnim = true
+        if (yDiff > 0) { /* up swipe */
           this.curIndex += 1
-          this.$router.push({ name: this.links[this.curIndex] })
-        } else if (yDiff < -10) { /* down swipe */
+          this.fade = 'fade'
+        } else if (yDiff < 0) { /* down swipe */
+          this.isAnim = true
           this.curIndex -= 1
-          this.$router.push({ name: this.links[this.curIndex] })
+          this.fade = 'fade-down'
         }
+        this.$router.push({ name: this.links[this.curIndex] })
+        setTimeout(() => { this.isAnim = false }, 500)
       }
       /* reset values */
       this.xDown = null
@@ -179,7 +191,7 @@ body {
   position: fixed;
   z-index: 10;
   top: 45%;
-  right: 50px;
+  right: 5%;
   display: flex;
   flex-flow: column;
 }
@@ -213,10 +225,28 @@ body {
   opacity: 0.5;
   transform: translateY(-100%);
 }
+.fade-down-enter{
+  opacity: 0.5;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-100%);
+}
+.fade-down-enter-active {
+  transition: all .5s ease;
+  z-index: 3;
+}
+.fade-down-leave-active {
+  transition: all .3s ease;
+}
+.fade-down-leave-to {
+  opacity: 0.5;
+  transform: translateY(100%);
+}
 /* common component */
 .fullscreen{
   width: 100%;
   height: 100%;
+  padding-top: 70px;
   position: absolute;
   display: flex;
   flex-flow: column;
@@ -233,7 +263,7 @@ body {
 }
 .bar{
   height: 2px;
-  margin: 20px 0 30px 5%;
+  margin: 2vh 0 3vh 5%;
   width: 30%;
   background-color: #000;
 }
@@ -244,5 +274,10 @@ body {
   padding-left: 5%;
   width: 80%;
   text-align: left;
+}
+@media screen and (max-width: 600px) {
+  .info{
+    font-size: 16px;
+  }
 }
 </style>
