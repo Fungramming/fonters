@@ -53,6 +53,7 @@ export default {
 
 <style scoped>
 .fullscreen{
+  background-image: url("../assets/background-4.jpg");
   background-color: #a0d9df;
 }
 .form-wrapper{

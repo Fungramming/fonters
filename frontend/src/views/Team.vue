@@ -26,6 +26,7 @@ export default {
 
 <style scoped>
 .fullscreen{
+  background-image: url("../assets/background-5.jpg");
   background-color: #8bd7a4;
 }
 .members{
