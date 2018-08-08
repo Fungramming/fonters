@@ -105,6 +105,25 @@ export default {
       this.xDown = null
       this.yDown = null
     }
+    // checkAllImages () {
+    //   let urls = ['1', '2', '3', '4', '5']
+    //   urls.forEach(element => {
+    //     let url = this.loadImages('./assets/background-' + element + '.jpg')
+    //     console.log(url)
+    //   })
+    // },
+    // loadImages (url) {
+    //   return new Promise(function (resolve, reject) {
+    //     var img = new Image()
+    //     img.src = url
+    //     img.onload = function () {
+    //       resolve(url)
+    //     }
+    //     img.onerror = function () {
+    //       reject(url)
+    //     }
+    //   })
+    // }
   },
   beforeDestroy () {
     document.getElementById('app').removeEventListener('mousewheel', this.vueWheel)
@@ -252,6 +271,9 @@ body {
   flex-flow: column;
   align-items: flex-start;
   justify-content: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 .headline{
   color: #000;

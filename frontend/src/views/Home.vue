@@ -22,6 +22,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .fullscreen{
+  background-image: url("../assets/background-1.jpg");
   background-color: #f7e990;
 }
 h1, h2 {
