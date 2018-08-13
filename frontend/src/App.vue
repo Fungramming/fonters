@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <header class='is-fixed nav'>
-      <a @click="navClicked(0)"  class="logo">Fonters</a>
+      <a @click="navClicked(0)"  class="logo">
+        <img src="./assets/logo.png" alt="Fonters logo">
+      </a>
       <a @click="navClicked(3)" class="button">Stay Tuned</a>
     </header>
     <transition :name='fade' mode="in-out">
@@ -42,6 +44,9 @@ export default {
     document.getElementById('app').addEventListener('DOMMouseScroll', this.vueWheel)
     document.addEventListener('touchstart', this.handleTouchStart, false)
     document.addEventListener('touchmove', this.handleTouchMove, false)
+    this.$analytics.fbq.init('218517765506944', {
+      em: 'jae.woo@blackrubystudio.com'
+    })
   },
   methods: {
     isActive (menuItem) {
@@ -108,7 +113,7 @@ export default {
     // checkAllImages () {
     //   let urls = ['1', '2', '3', '4', '5']
     //   urls.forEach(element => {
-    //     let url = this.loadImages('./assets/background-' + element + '.jpg')
+    //     let url = this.loadImages('./assets/background-' + element + '.jpeg')
     //     console.log(url)
     //   })
     // },
@@ -179,9 +184,13 @@ body {
   cursor: pointer;
   text-decoration: none;
   color: #000;
+  width: 95px;
+  display: flex;
+  align-items: center;
 }
-.logo:active{
-  color: #606266;
+.logo > img{
+  width: 100%;
+  margin: auto;
 }
 .button {
   line-height: 1;
@@ -239,10 +248,12 @@ body {
 }
 .fade-leave-active {
   transition: all .3s ease;
+  z-index:-3;
 }
 .fade-leave-to {
   opacity: 0.5;
   transform: translateY(-100%);
+  z-index:-3;
 }
 .fade-down-enter{
   opacity: 0.5;
@@ -256,10 +267,12 @@ body {
 }
 .fade-down-leave-active {
   transition: all .3s ease;
+  z-index:-3;
 }
 .fade-down-leave-to {
   opacity: 0.5;
   transform: translateY(100%);
+  z-index:-3;
 }
 /* common component */
 .fullscreen{
@@ -282,12 +295,14 @@ body {
   padding-left: 5%;
   width: 80%;
   text-align: left;
+  z-index: 1;
 }
 .bar{
   height: 2px;
   margin: 2vh 0 3vh 5%;
   width: 30%;
   background-color: #000;
+  z-index: 1;
 }
 .info{
   color: #69696b;
@@ -296,10 +311,16 @@ body {
   padding-left: 5%;
   width: 80%;
   text-align: left;
+  z-index: 1;
 }
 @media screen and (max-width: 600px) {
   .info{
     font-size: 16px;
   }
+}
+.fullscreenFilter{
+  position: absolute;
+  width: 100%;
+  height: 130%;
 }
 </style>
