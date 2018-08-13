@@ -16,7 +16,10 @@ export default {
 
 <style scoped>
 .fullscreen{
-  background-image: url("../assets/background-3.jpg");
+  background-image: url("../assets/background-3.jpeg");
   background-color: #f2cee7;
+}
+.info{
+  color: #606266;
 }
 </style>

@@ -24,6 +24,11 @@ export default {
       name: null
     }
   },
+  mounted () {
+    this.$analytics.fbq.event('ViewContent', {
+      content_ids: 'reservation'
+    })
+  },
   methods: {
     checkForm (e) {
       e.preventDefault()
@@ -39,6 +44,7 @@ export default {
         .then((resp) => {
           if (resp.status === 201) {
             alert('Sign up completed.\nThank you for participating!')
+            this.$analytics.fbq.event('CompleteRegistration')
             this.$router.push({ name: 'home' })
           }
         })
@@ -53,7 +59,7 @@ export default {
 
 <style scoped>
 .fullscreen{
-  background-image: url("../assets/background-4.jpg");
+  background-image: url("../assets/background-4.jpeg");
   background-color: #a0d9df;
 }
 .form-wrapper{
@@ -64,6 +70,7 @@ export default {
   flex-flow: row wrap;
   justify-content: space-between;
   align-content: space-between;
+  z-index: 1;
 }
 input{
   background-color: #fff;

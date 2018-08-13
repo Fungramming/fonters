@@ -10,7 +10,6 @@ cors = CORS(app, resources={"*": {"origins":"*"}})
 def save_email():
   try:
     name, email = request.get_json().get('name'), request.get_json().get('email')
-    print(name, email)
     db = TinyDB('db.json')
     db.insert({'name': name, 'email': email})
     return jsonify({'result': 'success'}), 201

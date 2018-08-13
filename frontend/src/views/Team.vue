@@ -26,8 +26,11 @@ export default {
 
 <style scoped>
 .fullscreen{
-  background-image: url("../assets/background-5.jpg");
+  background-image: url("../assets/background-5.jpeg");
   background-color: #8bd7a4;
+}
+.info {
+  color: #fff;
 }
 .members{
   margin-top: 50px;
@@ -35,6 +38,7 @@ export default {
   width: 80%;
   display: flex;
   flex-flow: row wrap;
+  z-index: 1;
 }
 .imageWrapper {
   height: 170px;
