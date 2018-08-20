@@ -7,7 +7,9 @@ import VueFacebookPixel from 'vue-analytics-facebook-pixel'
 
 Vue.config.productionTip = false
 Vue.use(VueFacebookPixel)
-
+Vue.analytics.fbq.init('508716799569349', {
+  em: 'jae.woo@blackrubystudio.com'
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

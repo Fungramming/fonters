@@ -44,9 +44,6 @@ export default {
     document.getElementById('app').addEventListener('DOMMouseScroll', this.vueWheel)
     document.addEventListener('touchstart', this.handleTouchStart, false)
     document.addEventListener('touchmove', this.handleTouchMove, false)
-    this.$analytics.fbq.init('218517765506944', {
-      em: 'jae.woo@blackrubystudio.com'
-    })
   },
   methods: {
     isActive (menuItem) {
